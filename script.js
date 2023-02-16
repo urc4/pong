@@ -32,7 +32,7 @@ class Paddle {
 class Ball {
   constructor({ position }) {
     this.position = position;
-    const speed = 3;
+    const speed = 2;
     const direction = {
       x: Math.random() - 0.5 > 0 ? speed : -speed,
       y: Math.random() - 0.5 > 0 ? speed : -speed,
@@ -50,6 +50,36 @@ class Ball {
   }
   update() {
     this.draw();
+
+    const leftSide = this.position.x + this.velocity.x;
+    const rightSide = this.position.x + this.width + this.velocity.x;
+
+    const bottomSide = this.position.y + this.height;
+    const topSide = this.position.y;
+    // paddle one collision
+    if (
+      leftSide < paddleOne.position.x + paddleOne.width &&
+      bottomSide >= paddleOne.position.y &&
+      topSide <= paddleOne.position.y + paddleOne.height
+    ) {
+      this.velocity.x = -this.velocity.x;
+    }
+
+    // paddle two collision
+    if (
+      rightSide >= paddleTwo.position.x &&
+      bottomSide >= paddleTwo.position.y &&
+      topSide <= paddleTwo.position.y + paddleTwo.height
+    ) {
+      this.velocity.x = -this.velocity.x;
+    }
+
+    // reverse y direction change this later
+    if (
+      bottomSide + this.velocity.y >= canvas.height ||
+      topSide + this.velocity.y <= 0
+    )
+      this.velocity.y = -this.velocity.y;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
   }
@@ -58,14 +88,14 @@ class Ball {
 const paddleOne = new Paddle({
   position: {
     x: 10,
-    y: 100,
+    y: canvas.height / 2 - 100,
   },
 });
 
 const paddleTwo = new Paddle({
   position: {
     x: canvas.width - 10 * 2,
-    y: 100,
+    y: canvas.height / 2 - 100,
   },
 });
 
