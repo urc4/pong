@@ -19,7 +19,11 @@ class Paddle {
   }
   update() {
     this.draw();
-    this.position.y += this.velocity.y;
+    if (
+      this.position.y + this.velocity.y > 0 &&
+      this.position.y + this.height + this.velocity.y < canvas.height
+    )
+      this.position.y += this.velocity.y;
   }
 }
 
@@ -50,22 +54,33 @@ function animate() {
 animate();
 
 document.addEventListener("keydown", (event) => {
+  const speed = 3;
   switch (event.key) {
     case "w":
-      paddleOne.velocity.y = -1;
+      // go up
+      paddleOne.velocity.y = -speed;
       break;
     case "s":
-      paddleOne.velocity.y = 1;
+      // go down
+      paddleOne.velocity.y = speed;
+      break;
+    case "ArrowUp":
+      // go up
+      paddleTwo.velocity.y = -speed;
+      break;
+    case "ArrowDown":
+      // go down
+      paddleTwo.velocity.y = speed;
       break;
   }
 });
-document.addEventListener("keyup", (event) => {
-  switch (event.key) {
-    case "w":
-      paddleOne.velocity.y = 0;
-      break;
-    case "s":
-      paddleOne.velocity.y = 0;
-      break;
-  }
-});
+// document.addEventListener("keyup", (event) => {
+//   switch (event.key) {
+//     case "w":
+//       paddleOne.velocity.y = 0;
+//       break;
+//     case "s":
+//       paddleOne.velocity.y = 0;
+//       break;
+//   }
+// });
