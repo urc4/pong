@@ -1,3 +1,5 @@
+// how about an inverse pong where the goal is to get scored on
+
 const canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -27,6 +29,27 @@ class Paddle {
   }
 }
 
+class Ball {
+  constructor({ position }) {
+    this.position = position;
+    this.velocity = {
+      x: 3,
+      y: 3,
+    };
+    this.height = 10;
+    this.width = 10;
+  }
+  draw() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+  update() {
+    this.draw();
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+  }
+}
+
 const paddleOne = new Paddle({
   position: {
     x: 10,
@@ -41,6 +64,13 @@ const paddleTwo = new Paddle({
   },
 });
 
+const ball = new Ball({
+  position: {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+  },
+});
+
 //  animate is called recursively ensuring it is updated before each animation cycle
 // this is a callback function
 function animate() {
@@ -48,6 +78,7 @@ function animate() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   paddleOne.update();
   paddleTwo.update();
+  ball.update();
   requestAnimationFrame(animate);
 }
 
