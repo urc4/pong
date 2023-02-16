@@ -17,6 +17,10 @@ class Paddle {
     ctx.fillStyle = "white";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
+  update() {
+    this.draw();
+    this.position.y += this.velocity.y;
+  }
 }
 
 const paddleOne = new Paddle({
@@ -33,5 +37,35 @@ const paddleTwo = new Paddle({
   },
 });
 
-paddleOne.draw();
-paddleTwo.draw();
+//  animate is called recursively ensuring it is updated before each animation cycle
+// this is a callback function
+function animate() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  paddleOne.update();
+  paddleTwo.update();
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+document.addEventListener("keydown", (event) => {
+  switch (event.key) {
+    case "w":
+      paddleOne.velocity.y = -1;
+      break;
+    case "s":
+      paddleOne.velocity.y = 1;
+      break;
+  }
+});
+document.addEventListener("keyup", (event) => {
+  switch (event.key) {
+    case "w":
+      paddleOne.velocity.y = 0;
+      break;
+    case "s":
+      paddleOne.velocity.y = 0;
+      break;
+  }
+});
