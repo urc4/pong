@@ -1,8 +1,8 @@
 // how about an inverse pong where the goal is to get scored on
 
 const canvas = document.querySelector("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = 600;
+canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
 class Paddle {
@@ -88,14 +88,14 @@ class Ball {
 const paddleOne = new Paddle({
   position: {
     x: 10,
-    y: canvas.height / 2 - 100,
+    y: canvas.height / 2 - 50,
   },
 });
 
 const paddleTwo = new Paddle({
   position: {
     x: canvas.width - 10 * 2,
-    y: canvas.height / 2 - 100,
+    y: canvas.height / 2 - 50,
   },
 });
 
