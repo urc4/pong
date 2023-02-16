@@ -32,9 +32,14 @@ class Paddle {
 class Ball {
   constructor({ position }) {
     this.position = position;
+    const speed = 3;
+    const direction = {
+      x: Math.random() - 0.5 > 0 ? speed : -speed,
+      y: Math.random() - 0.5 > 0 ? speed : -speed,
+    };
     this.velocity = {
-      x: 3,
-      y: 3,
+      x: direction.x,
+      y: direction.y,
     };
     this.height = 10;
     this.width = 10;
