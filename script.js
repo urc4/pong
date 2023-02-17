@@ -5,6 +5,9 @@ canvas.width = 600;
 canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
+const paddleOneScore = document.querySelector("#player-one");
+const paddleTwoScore = document.querySelector("#player-two");
+
 class Paddle {
   constructor({ position }) {
     this.position = position;
@@ -14,6 +17,7 @@ class Paddle {
     };
     this.width = 10;
     this.height = 100;
+    this.score = 0;
   }
   draw() {
     ctx.fillStyle = "white";
@@ -32,10 +36,10 @@ class Paddle {
 class Ball {
   constructor({ position }) {
     this.position = position;
-    const speed = 2;
+    this.speed = 2;
     const direction = {
-      x: Math.random() - 0.5 > 0 ? speed : -speed,
-      y: Math.random() - 0.5 > 0 ? speed : -speed,
+      x: Math.random() - 0.5 > 0 ? this.speed : -this.speed,
+      y: Math.random() - 0.5 > 0 ? this.speed : -this.speed,
     };
     this.velocity = {
       x: direction.x,
@@ -80,8 +84,18 @@ class Ball {
       topSide + this.velocity.y <= 0
     )
       this.velocity.y = -this.velocity.y;
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+
+    if (leftSide < 0 || rightSide > canvas.width) {
+      if (leftSide < 0) paddleTwo.score += 1;
+      else if (rightSide > canvas.width) paddleOne.score += 1;
+      this.position.x = canvas.width / 2;
+      this.position.y = canvas.height / 2;
+      this.velocity.x = Math.random() - 0.5 > 0 ? this.speed : -this.speed;
+      this.velocity.y = Math.random() - 0.5 > 0 ? this.speed : -this.speed;
+    }
   }
 }
 
@@ -114,6 +128,8 @@ function animate() {
   paddleOne.update();
   paddleTwo.update();
   ball.update();
+  paddleOneScore.textContent = `${paddleOne.score}`;
+  paddleTwoScore.textContent = `${paddleTwo.score}`;
   requestAnimationFrame(animate);
 }
 
